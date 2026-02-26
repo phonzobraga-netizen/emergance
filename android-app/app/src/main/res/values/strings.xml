@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Emergance</string>
+    <string name="heartbeat_channel_name">Emergance Driver Heartbeat</string>
+    <string name="heartbeat_notification_text">Driver mode active. Sending heartbeat every 5s.</string>
+</resources>

@@ -1,0 +1,32 @@
+{
+  "name": "emergance-dispatch-desktop",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Offline dispatch desktop app for Emergance",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "npm run build && node scripts/start-electron.js",
+    "dev": "npm run build && node scripts/start-electron.js",
+    "start:headless": "npm run build && node dist/headless.js",
+    "dev:headless": "npm run build && node dist/headless.js",
+    "test": "vitest run",
+    "provision": "node scripts/provision-device.js",
+    "map:philippines": "node scripts/setup-philippines-map.mjs"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "libsodium-wrappers-sumo": "^0.7.15",
+    "maplibre-gl": "^4.7.1",
+    "protobufjs": "^7.4.0",
+    "uuid": "^11.0.5",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.13.1",
+    "electron": "^35.0.0",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.5"
+  }
+}

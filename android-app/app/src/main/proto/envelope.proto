@@ -1,0 +1,146 @@
+syntax = "proto3";
+
+package emergance;
+
+option java_package = "com.emergance.protocol";
+option java_multiple_files = true;
+
+message Envelope {
+  uint32 schema_version = 1;
+  string message_id = 2;
+  string incident_id = 3;
+  MessageType type = 4;
+  string sender_device_id = 5;
+  DeviceRole sender_role = 6;
+  int64 created_at_ms = 7;
+  uint32 ttl_ms = 8;
+  uint32 hop_count = 9;
+  bool ack_required = 10;
+  bytes nonce = 11;
+  bytes ciphertext = 12;
+  bytes signature = 13;
+  bytes key_id = 14;
+  bytes required_ack_for = 15;
+}
+
+enum MessageType {
+  MESSAGE_TYPE_UNSPECIFIED = 0;
+  SOS_CREATE = 1;
+  SOS_RECEIVED_ACK = 2;
+  DRIVER_HEARTBEAT = 3;
+  ASSIGNMENT_OFFER = 4;
+  ASSIGNMENT_ACK = 5;
+  ASSIGNMENT_REJECT = 6;
+  INCIDENT_STATUS_UPDATE = 7;
+  PEER_HELLO = 8;
+  STORE_FORWARD_BUNDLE = 9;
+}
+
+enum DeviceRole {
+  DEVICE_ROLE_UNSPECIFIED = 0;
+  SOS = 1;
+  DRIVER = 2;
+  DISPATCH = 3;
+  RELAY = 4;
+}
+
+enum IncidentStatus {
+  INCIDENT_STATUS_UNSPECIFIED = 0;
+  PENDING_NETWORK = 1;
+  RECEIVED = 2;
+  ASSIGNED = 3;
+  RESOLVED = 4;
+  CANCELLED = 5;
+  UNASSIGNED_RETRY = 6;
+}
+
+enum LocationQuality {
+  LOCATION_QUALITY_UNSPECIFIED = 0;
+  LIVE = 1;
+  DEGRADED = 2;
+}
+
+message Coordinate {
+  double lat = 1;
+  double lng = 2;
+  float accuracy_m = 3;
+  int64 fix_at_ms = 4;
+  LocationQuality quality = 5;
+}
+
+message SosCreate {
+  string incident_id = 1;
+  Coordinate coordinate = 2;
+  int64 client_created_at_ms = 3;
+  string notes = 4;
+}
+
+message SosReceivedAck {
+  string message_id = 1;
+  string incident_id = 2;
+  int64 received_at_ms = 3;
+}
+
+message DriverHeartbeat {
+  string device_id = 1;
+  bool on_duty = 2;
+  bool available = 3;
+  Coordinate coordinate = 4;
+  uint32 battery_pct = 5;
+}
+
+message AssignmentOffer {
+  string assignment_id = 1;
+  string incident_id = 2;
+  string driver_device_id = 3;
+  Coordinate incident_coordinate = 4;
+  int64 ack_deadline_ms = 5;
+}
+
+message AssignmentAck {
+  string assignment_id = 1;
+  string incident_id = 2;
+  string driver_device_id = 3;
+  int64 ack_at_ms = 4;
+}
+
+message AssignmentReject {
+  string assignment_id = 1;
+  string incident_id = 2;
+  string driver_device_id = 3;
+  string reason = 4;
+  int64 rejected_at_ms = 5;
+}
+
+message IncidentStatusUpdate {
+  string incident_id = 1;
+  IncidentStatus status = 2;
+  string assigned_driver_id = 3;
+  int64 updated_at_ms = 4;
+  string reason = 5;
+}
+
+message PeerHello {
+  string device_id = 1;
+  DeviceRole role = 2;
+  repeated string transports = 3;
+  int64 sent_at_ms = 4;
+}
+
+message StoreForwardBundle {
+  repeated Envelope envelopes = 1;
+}
+
+message Payload {
+  oneof body {
+    SosCreate sos_create = 1;
+    SosReceivedAck sos_received_ack = 2;
+    DriverHeartbeat driver_heartbeat = 3;
+    AssignmentOffer assignment_offer = 4;
+    AssignmentAck assignment_ack = 5;
+    AssignmentReject assignment_reject = 6;
+    IncidentStatusUpdate incident_status_update = 7;
+    PeerHello peer_hello = 8;
+    StoreForwardBundle store_forward_bundle = 9;
+  }
+}

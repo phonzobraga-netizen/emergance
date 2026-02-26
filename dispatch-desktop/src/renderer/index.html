@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Emergance Dispatch</title>
+    <link rel="stylesheet" href="../../node_modules/maplibre-gl/dist/maplibre-gl.css" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>Emergance Dispatch</h1>
+        <p id="subtitle">Offline incident operations</p>
+      </div>
+      <div class="mission-path">
+        <span>Keypack:</span>
+        <code id="mission-file">loading...</code>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel incidents">
+        <h2>Active Incidents</h2>
+        <ul id="incident-list"></ul>
+      </section>
+
+      <section class="panel map-panel">
+        <h2>Offline Map (Philippines)</h2>
+        <div class="toolbar map-toolbar">
+          <button id="ping-location-btn" type="button">Ping My Location</button>
+          <button id="recenter-btn" type="button">Recenter Map</button>
+        </div>
+        <div id="map"></div>
+        <div class="map-legend">
+          <span><i class="legend-dot incident"></i>Incident</span>
+          <span><i class="legend-dot responder"></i>Responder</span>
+          <span><i class="legend-dot origin"></i>Origin ping</span>
+        </div>
+        <div class="status-line" id="status-line">Waiting for location ping...</div>
+      </section>
+
+      <section class="panel responders">
+        <h2>Responders</h2>
+        <ul id="responder-list"></ul>
+      </section>
+    </main>
+
+    <script src="../../node_modules/maplibre-gl/dist/maplibre-gl.js"></script>
+    <script src="./renderer.js"></script>
+  </body>
+</html>

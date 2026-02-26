@@ -1,0 +1,15 @@
+# Dispatch
+dispatch-desktop/node_modules/
+dispatch-desktop/dist/
+
+# Android
+android-app/.gradle/
+android-app/.idea/
+android-app/app/build/
+android-app/build/
+android-app/local.properties
+
+# Runtime DBs
+*.db
+*.db-wal
+*.db-shm
